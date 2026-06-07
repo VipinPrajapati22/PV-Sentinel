@@ -279,14 +279,14 @@ export async function uploadCsv(req: AuthenticatedRequest, res: Response) {
 
     if (name.endsWith('.xls') || name.endsWith('.xlsx') || req.file.mimetype.includes('spreadsheet') || req.file.mimetype.includes('excel')) {
       const workbook = new ExcelJS.Workbook();
-      await workbook.xlsx.load(req.file.buffer);
+      await workbook.xlsx.load(req.file.buffer as any);
       const sheet = workbook.worksheets[0] || workbook.getWorksheet(1);
       if (!sheet) return res.status(400).json({ error: 'Excel file contains no worksheets' });
 
       // Read header
       const headers: string[] = [];
       const headerRow = sheet.getRow(1);
-      headerRow.eachCell({ includeEmpty: true }, (cell, colNumber) => {
+      headerRow.eachCell({ includeEmpty: true }, (cell: any, colNumber: number) => {
         const txt = cell.text || (cell.value ? String(cell.value) : '');
         headers[colNumber - 1] = txt ? String(txt).trim() : `Column${colNumber}`;
       });
@@ -376,7 +376,7 @@ export async function uploadCsv(req: AuthenticatedRequest, res: Response) {
       const parsedReporter = reporter || 'Unknown';
       const parsedFollowUp = followUp || 'No';
 
-      const mappedTerm = reaction ? terminologyList.find(t =>
+      const mappedTerm = reaction ? terminologyList.find((t: any) =>
         t.lltName.toLowerCase() === reaction.toLowerCase().trim() ||
         t.ptName.toLowerCase() === reaction.toLowerCase().trim()
       ) : null;
@@ -496,7 +496,7 @@ export async function importValidatedReports(req: AuthenticatedRequest, res: Res
 
     let importCount = 0;
 
-    await prisma.$transaction(async (tx) => {
+    await prisma.$transaction(async (tx: any) => {
       for (const rep of reports) {
         // Find or create patient
         const patient = await tx.patient.create({

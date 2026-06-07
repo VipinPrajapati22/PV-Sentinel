@@ -76,7 +76,7 @@ export async function escalateSignal(req: AuthenticatedRequest, res: Response) {
     const riskScore = severityVal * likelihoodVal;
 
     // Use Prisma transaction to create register, update signal, log history, create CAPA, and create notifications
-    const result = await prisma.$transaction(async (tx) => {
+    const result = await prisma.$transaction(async (tx: any) => {
       // Create Risk Register
       const risk = await tx.riskRegister.create({
         data: {

@@ -19,7 +19,7 @@ export async function exportExcel(req: AuthenticatedRequest, res: Response) {
       include: { suspectedDrug: true, reactionTerminology: true }
     });
 
-    const reportsData = dbReports.map(r => ({
+    const reportsData = dbReports.map((r: any) => ({
       id: r.id.substring(0, 8).toUpperCase(), // Shorten UUID for Excel read
       patientAge: r.patientId ? 0 : 0, // Placeholder, let's load patient age below
       patientAgeUnit: '',
@@ -35,12 +35,12 @@ export async function exportExcel(req: AuthenticatedRequest, res: Response) {
     }));
 
     // Retrieve patient details in parallel
-    const patientIds = dbReports.map(r => r.patientId);
+    const patientIds = dbReports.map((r: any) => r.patientId);
     const patients = await prisma.patient.findMany({
       where: { id: { in: patientIds } }
     });
 
-    dbReports.forEach((r, idx) => {
+    dbReports.forEach((r: any, idx: number) => {
       const pat = patients.find(p => p.id === r.patientId);
       if (pat) {
         reportsData[idx].patientAge = pat.age;
@@ -54,7 +54,7 @@ export async function exportExcel(req: AuthenticatedRequest, res: Response) {
       include: { drug: true }
     });
 
-    const signalsData = dbSignals.map(s => ({
+    const signalsData = dbSignals.map((s: any) => ({
       drugName: s.drug.genericName,
       reactionPtName: s.reactionPtName,
       prr: s.prr,
@@ -70,11 +70,11 @@ export async function exportExcel(req: AuthenticatedRequest, res: Response) {
     }));
 
     // Calculate overall stats
-    const strong = dbSignals.filter(s => s.strength === 'Strong').length;
-    const moderate = dbSignals.filter(s => s.strength === 'Moderate').length;
-    const weak = dbSignals.filter(s => s.strength === 'Weak').length;
-    const prrs = dbSignals.map(s => s.prr);
-    const avgPrr = prrs.length > 0 ? prrs.reduce((a, b) => a + b, 0) / prrs.length : 0;
+    const strong = dbSignals.filter((s: any) => s.strength === 'Strong').length;
+    const moderate = dbSignals.filter((s: any) => s.strength === 'Moderate').length;
+    const weak = dbSignals.filter((s: any) => s.strength === 'Weak').length;
+    const prrs = dbSignals.map((s: any) => s.prr);
+    const avgPrr = prrs.length > 0 ? prrs.reduce((a: number, b: number) => a + b, 0) / prrs.length : 0;
     const maxPrr = prrs.length > 0 ? Math.max(...prrs) : 0;
 
     const stats = {
@@ -147,7 +147,7 @@ export async function exportSignalPdf(req: AuthenticatedRequest, res: Response) 
     const reporterDist: Record<string, number> = {};
     const causalityStats: Record<string, number> = {};
 
-    cases.forEach((c) => {
+    cases.forEach((c: any) => {
       // Age group
       const age = c.patient.age;
       const unit = c.patient.ageUnit;
@@ -307,14 +307,14 @@ export async function dashboard(req: AuthenticatedRequest, res: Response) {
     // Severity distribution
     const reportsForDist = await prisma.aDRReport.findMany({ select: { severity: true, reportDate: true } });
     const severityDistribution: Record<string, number> = {};
-    reportsForDist.forEach(r => {
+    reportsForDist.forEach((r: any) => {
       severityDistribution[r.severity] = (severityDistribution[r.severity] || 0) + 1;
     });
 
     // Signal strength distribution
     const signals = await prisma.signalDetection.findMany({ select: { strength: true } });
     const signalStrengthDistribution: Record<string, number> = {};
-    signals.forEach(s => { signalStrengthDistribution[s.strength] = (signalStrengthDistribution[s.strength] || 0) + 1; });
+    signals.forEach((s: any) => { signalStrengthDistribution[s.strength] = (signalStrengthDistribution[s.strength] || 0) + 1; });
 
     // Monthly trend (last 12 months)
     const months: { key: string; label: string }[] = [];
@@ -325,19 +325,19 @@ export async function dashboard(req: AuthenticatedRequest, res: Response) {
       months.push({ key, label });
     }
 
-    const monthlyReportsPromises = months.map(m => prisma.aDRReport.count({ where: { reportDate: { gte: new Date(m.key + '-01'), lt: new Date(new Date(m.key + '-01').getFullYear(), new Date(m.key + '-01').getMonth() + 1, 1) } } }));
-    const monthlySignalsPromises = months.map(m => prisma.signalDetection.count({ where: { detectedAt: { gte: new Date(m.key + '-01'), lt: new Date(new Date(m.key + '-01').getFullYear(), new Date(m.key + '-01').getMonth() + 1, 1) } } }));
+    const monthlyReportsPromises = months.map((m: any) => prisma.aDRReport.count({ where: { reportDate: { gte: new Date(m.key + '-01'), lt: new Date(new Date(m.key + '-01').getFullYear(), new Date(m.key + '-01').getMonth() + 1, 1) } } }));
+    const monthlySignalsPromises = months.map((m: any) => prisma.signalDetection.count({ where: { detectedAt: { gte: new Date(m.key + '-01'), lt: new Date(new Date(m.key + '-01').getFullYear(), new Date(m.key + '-01').getMonth() + 1, 1) } } }));
 
     const monthlyReports = await Promise.all(monthlyReportsPromises);
     const monthlySignals = await Promise.all(monthlySignalsPromises);
 
-    const monthlyTrend = months.map((m, idx) => ({ month: m.label, reports: monthlyReports[idx] || 0, signals: monthlySignals[idx] || 0 }));
+    const monthlyTrend = months.map((m: any, idx: number) => ({ month: m.label, reports: monthlyReports[idx] || 0, signals: monthlySignals[idx] || 0 }));
 
     // Compute additional signal statistics for risk radar
     const dbSignals = await prisma.signalDetection.findMany({ select: { strength: true, signalScore: true } });
     const totalSignals = dbSignals.length;
-    const strongCount = dbSignals.filter(s => s.strength === 'Strong').length;
-    const avgSignalScore = dbSignals.length ? Math.round((dbSignals.reduce((a, b) => a + (b.signalScore || 0), 0) / dbSignals.length) * 100) / 100 : 0;
+    const strongCount = dbSignals.filter((s: any) => s.strength === 'Strong').length;
+    const avgSignalScore = dbSignals.length ? Math.round((dbSignals.reduce((a: number, b: any) => a + (b.signalScore || 0), 0) / dbSignals.length) * 100) / 100 : 0;
 
     // CAPA / Risk registers
     const capaCount = await prisma.riskRegister.count();

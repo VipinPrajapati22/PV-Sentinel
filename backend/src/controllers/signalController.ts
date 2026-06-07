@@ -72,7 +72,7 @@ export async function getTopSignals(req: AuthenticatedRequest, res: Response) {
     });
 
     // Attach case counts for each signal so frontend can display 'Cases'
-    const signals = await Promise.all(rawSignals.map(async (s) => {
+    const signals = await Promise.all(rawSignals.map(async (s: any) => {
       const cases = await prisma.aDRReport.count({
         where: {
           suspectedDrugId: s.drugId,
