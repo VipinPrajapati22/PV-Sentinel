@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import {
-  X, Activity, BarChart2, Clock, User, AlertTriangle,
-  Brain, FileText, ChevronDown, ChevronUp, CheckCircle
+  X, Activity, BarChart2, Clock, User, ,
+  Brain, ChevronDown, ChevronUp, CheckCircle
 } from 'lucide-react';
 import { signals } from '../lib/api';
 import {
@@ -25,7 +25,7 @@ const SEVERITY_COLORS: Record<string, string> = {
 export default function SignalDetailModal({ signalId, onClose }: Props) {
   const qc = useQueryClient();
   const [statusForm, setStatusForm] = useState({ status: '', notes: '' });
-  const [showStatusForm, setShowStatusForm] = useState(false);
+  const [, setShowStatusForm] = useState(false);
   const [expandedSection, setExpandedSection] = useState<string | null>('stats');
 
   const { data, isLoading } = useQuery({

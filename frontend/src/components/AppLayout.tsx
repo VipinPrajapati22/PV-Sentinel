@@ -19,15 +19,6 @@ const NAV_ITEMS = [
   { to: '/audit', icon: Database, label: 'Audit Trail' },
 ];
 
-const PAGE_TITLES: Record<string, string> = {
-  '/': 'Command Center',
-  '/import': 'CSV Import Wizard',
-  '/reports': 'ADR Reports',
-  '/signals': 'Signal Detection',
-  '/risks': 'Risk Register',
-  '/notifications': 'Notification Center',
-  '/audit': 'Audit Trail',
-};
 
 export default function AppLayout() {
   const { user, logout } = useAuth();
