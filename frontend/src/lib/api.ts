@@ -1,4 +1,4 @@
-const BASE_URL = 'http://localhost:5000/api';
+const BASE_URL = 'https://pv-sentinel.onrender.com/api/health';
 
 function getToken(): string | null {
   return localStorage.getItem('pv_token');
