@@ -1,0 +1,1 @@
+console.log("Pharmacovigilance Dashboard Loaded");

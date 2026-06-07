@@ -1,0 +1,68 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<h1 class="mb-4">🔴 Top 15 Highest Risk Signals</h1>
+
+<p class="lead">Signals with the highest Proportional Reporting Ratio (PRR) values</p>
+
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+  <thead class="table-dark">
+    <tr>
+      <th>Rank</th>
+      <th>Drug</th>
+      <th>Side Effect</th>
+      <th>PRR Value</th>
+      <th>Cases</th>
+      <th>Strength</th>
+      <th>Confidence</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for signal in signals %}
+    <tr>
+      <td><strong>#{{ loop.index }}</strong></td>
+      <td>{{ signal.drug_name }}</td>
+      <td>{{ signal.side_effect }}</td>
+      <td>
+        {% if signal.prr_value >= 100 %}
+          <span class="badge bg-danger fs-6">{{ signal.prr_value }}</span>
+        {% elif signal.prr_value >= 10 %}
+          <span class="badge bg-warning text-dark fs-6">{{ signal.prr_value }}</span>
+        {% else %}
+          <span class="badge bg-info fs-6">{{ signal.prr_value }}</span>
+        {% endif %}
+      </td>
+      <td>{{ signal.case_count }}</td>
+      <td>
+        {% if signal.signal_strength == 'Strong' %}
+          <span class="badge bg-danger">{{ signal.signal_strength }}</span>
+        {% elif signal.signal_strength == 'Moderate' %}
+          <span class="badge bg-warning text-dark">{{ signal.signal_strength }}</span>
+        {% else %}
+          <span class="badge bg-info">{{ signal.signal_strength }}</span>
+        {% endif %}
+      </td>
+      <td>{{ (signal.confidence_score * 100)|int }}%</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+</div>
+
+<div class="mt-4 p-3 bg-light rounded">
+  <h5>Understanding PRR Values:</h5>
+  <ul>
+    <li><strong>PRR = 2:</strong> Side effect reported 2x more frequently than background</li>
+    <li><strong>PRR = 10:</strong> Side effect reported 10x more frequently</li>
+    <li><strong>PRR = 100:</strong> Side effect reported 100x more frequently</li>
+    <li><strong>PRR > 2000:</strong> Extremely strong signal requiring immediate investigation</li>
+  </ul>
+</div>
+
+<div class="mt-4">
+  <a href="/signals" class="btn btn-info">View All Signals by Category</a>
+</div>
+
+{% endblock %}

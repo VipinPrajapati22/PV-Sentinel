@@ -1,0 +1,101 @@
+name: Deploy to Vercel
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+    branches:
+      - main
+      - develop
+
+env:
+  NODE_VERSION: '18.x'
+
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        node-version: [18.x]
+    
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+      
+      # Backend Checks
+      - name: Install backend dependencies
+        run: cd backend && npm install
+      
+      - name: Run backend linting
+        run: cd backend && npm run lint --if-present
+        continue-on-error: true
+      
+      - name: Run backend tests
+        run: cd backend && npm test --if-present
+        continue-on-error: true
+      
+      # Frontend Checks
+      - name: Install frontend dependencies
+        run: cd frontend && npm install
+      
+      - name: Run frontend linting
+        run: cd frontend && npm run lint
+        continue-on-error: true
+      
+      - name: Build frontend
+        run: cd frontend && npm run build
+      
+      - name: Upload frontend artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: frontend-build
+          path: frontend/dist
+
+  deploy-to-vercel:
+    needs: lint-and-test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Deploy Frontend to Vercel
+        uses: vercel/action@master
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID_FRONTEND }}
+          vercel-args: '--prod'
+        env:
+          VITE_API_URL: ${{ secrets.VITE_API_URL }}
+      
+      - name: Deploy Backend to Vercel
+        uses: vercel/action@master
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID_BACKEND }}
+          vercel-args: '--prod'
+          working-directory: ./backend
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          SMTP_HOST: ${{ secrets.SMTP_HOST }}
+          SMTP_PORT: ${{ secrets.SMTP_PORT }}
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASS: ${{ secrets.SMTP_PASS }}
+      
+      - name: Deployment notification
+        if: success()
+        run: |
+          echo "✅ Deployment successful!"
+          echo "Frontend: ${{ env.DEPLOYMENT_URL_FRONTEND }}"
+          echo "Backend: ${{ env.DEPLOYMENT_URL_BACKEND }}"

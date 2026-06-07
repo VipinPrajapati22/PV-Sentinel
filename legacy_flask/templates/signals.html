@@ -1,0 +1,162 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<h1 class="mb-4">🚨 Detected Safety Signals</h1>
+
+<div class="row mb-4">
+  <div class="col-md-3">
+    <div class="card bg-danger text-white">
+      <div class="card-body">
+        <h5>Total Signals</h5>
+        <h2>{{ total_signals }}</h2>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card bg-dark text-white">
+      <div class="card-body">
+        <h5>Strong (PRR > 100)</h5>
+        <h2>{{ strong_count }}</h2>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card bg-warning text-dark">
+      <div class="card-body">
+        <h5>Moderate (PRR 10-100)</h5>
+        <h2>{{ moderate_count }}</h2>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card bg-info text-white">
+      <div class="card-body">
+        <h5>Weak (PRR 2-10)</h5>
+        <h2>{{ weak_count }}</h2>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Strong Signals -->
+{% if strong_signals %}
+<h3 class="mt-5 text-danger">⛔ STRONG SIGNALS (PRR > 100)</h3>
+<div class="table-responsive mb-4">
+<table class="table table-hover table-bordered">
+  <thead class="table-danger">
+    <tr>
+      <th>Drug</th>
+      <th>Side Effect</th>
+      <th>PRR Value</th>
+      <th>Cases</th>
+      <th>Confidence</th>
+      <th>Details</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for signal in strong_signals %}
+    <tr>
+      <td><strong>{{ signal.drug_name }}</strong></td>
+      <td>{{ signal.side_effect }}</td>
+      <td><span class="badge bg-danger fs-6">{{ signal.prr_value }}</span></td>
+      <td>{{ signal.case_count }}</td>
+      <td>{{ (signal.confidence_score * 100)|int }}%</td>
+      <td>
+        <small>{{ signal.notes }}</small>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+</div>
+{% endif %}
+
+<!-- Moderate Signals -->
+{% if moderate_signals %}
+<h3 class="mt-5 text-warning">⚠️  MODERATE SIGNALS (PRR 10-100)</h3>
+<div class="table-responsive mb-4">
+<table class="table table-hover table-bordered">
+  <thead class="table-warning">
+    <tr>
+      <th>Drug</th>
+      <th>Side Effect</th>
+      <th>PRR Value</th>
+      <th>Cases</th>
+      <th>Confidence</th>
+      <th>Details</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for signal in moderate_signals %}
+    <tr>
+      <td>{{ signal.drug_name }}</td>
+      <td>{{ signal.side_effect }}</td>
+      <td><span class="badge bg-warning text-dark fs-6">{{ signal.prr_value }}</span></td>
+      <td>{{ signal.case_count }}</td>
+      <td>{{ (signal.confidence_score * 100)|int }}%</td>
+      <td>
+        <small>{{ signal.notes }}</small>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+</div>
+{% endif %}
+
+<!-- Weak Signals -->
+{% if weak_signals %}
+<h3 class="mt-5 text-info">ℹ️  WEAK SIGNALS (PRR 2-10)</h3>
+<div class="table-responsive mb-4">
+<table class="table table-hover table-bordered">
+  <thead class="table-info">
+    <tr>
+      <th>Drug</th>
+      <th>Side Effect</th>
+      <th>PRR Value</th>
+      <th>Cases</th>
+      <th>Confidence</th>
+      <th>Details</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for signal in weak_signals %}
+    <tr>
+      <td>{{ signal.drug_name }}</td>
+      <td>{{ signal.side_effect }}</td>
+      <td><span class="badge bg-info fs-6">{{ signal.prr_value }}</span></td>
+      <td>{{ signal.case_count }}</td>
+      <td>{{ (signal.confidence_score * 100)|int }}%</td>
+      <td>
+        <small>{{ signal.notes }}</small>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+</div>
+{% endif %}
+
+{% if not all_signals %}
+<div class="alert alert-info mt-4">
+  <p><strong>No signals detected yet.</strong> Add more ADR reports to enable signal detection.</p>
+</div>
+{% endif %}
+
+<hr>
+<div class="mt-4">
+  <p class="text-muted">
+    <small>
+      <strong>Signal Strength Classification:</strong><br>
+      • <strong>Strong:</strong> PRR > 100 (side effect reported 100x more frequently)<br>
+      • <strong>Moderate:</strong> PRR 10-100 (10-100x more frequent)<br>
+      • <strong>Weak:</strong> PRR 2-10 (2-10x more frequent)<br>
+      <br>
+      <strong>PRR (Proportional Reporting Ratio)</strong> is a validated pharmacovigilance metric used by FDA/EMA.
+      It measures if a side effect is reported disproportionately more often for a specific drug compared to all other drugs.
+    </small>
+  </p>
+</div>
+
+{% endblock %}

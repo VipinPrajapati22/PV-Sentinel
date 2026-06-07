@@ -1,0 +1,54 @@
+# Dependencies
+node_modules/
+.env
+.env.local
+.env*.local
+
+# Build outputs
+dist/
+build/
+.next/
+
+# Database
+*.db
+*.sqlite
+prisma/dev.db
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*.sublime-workspace
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Backend specific
+__pycache__/
+*.pyc
+*.pyo
+venv/
+.pytest_cache/
+backend/uploads/
+
+# Frontend specific
+.turbo/
+coverage/
+
+# Legacy Flask
+legacy_flask/__pycache__/
+legacy_flask/instance/
+
+# Vercel
+.vercel/
+
+# Prisma
+prisma/dev.db
+prisma/dev.db-journal

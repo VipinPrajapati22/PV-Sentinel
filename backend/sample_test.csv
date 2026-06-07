@@ -1,0 +1,3 @@
+Patient Age,Age Unit,Gender,Drug,Reaction,Severity,Seriousness,Outcome,Reporter,Follow-up,Notes
+"45","Years","Female","Warfarin","GI haemorrhage","Severe","Serious","Hospitalized","Dr. A","Yes","Patient on multiple meds"
+"63","Years","Male","Metformin","Hypoglycemia","Moderate","Non-Serious","Recovered","Dr. B","No","No dechallenge"

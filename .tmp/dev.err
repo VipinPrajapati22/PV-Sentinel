@@ -1,0 +1,59 @@
+(node:3544) [DEP0190] DeprecationWarning: Passing args to a child process with shell option true can lead to security vulnerabilities, as the arguments are not escaped, only concatenated.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+[backend] ReferenceError: exportController is not defined
+    at Object.<anonymous> (D:\label\pharmacovigilance_dashboard\backend\src\routes\exportRoutes.ts:9:26)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1854:14)
+    at Module._compile (D:\label\pharmacovigilance_dashboard\node_modules\source-map-support\source-map-support.js:568:25)
+    at Module.m._compile (C:\Users\vipin\AppData\Local\Temp\ts-node-dev-hook-930106338339553.js:69:33)
+    at node:internal/modules/cjs/loader:1985:10
+    at require.extensions..jsx.require.extensions..js (C:\Users\vipin\AppData\Local\Temp\ts-node-dev-hook-930106338339553.js:114:20)
+    at require.extensions.<computed> (C:\Users\vipin\AppData\Local\Temp\ts-node-dev-hook-930106338339553.js:71:20)
+    at Object.nodeDevHook [as .ts] (D:\label\pharmacovigilance_dashboard\node_modules\ts-node-dev\lib\hook.js:63:13)
+    at Module.load (node:internal/modules/cjs/loader:1577:32)
+    at Module._load (node:internal/modules/cjs/loader:1379:12)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+    at Module.require (node:internal/modules/cjs/loader:1600:12)
+    at require (node:internal/modules/helpers:153:16)
+    at Object.<anonymous> (D:\label\pharmacovigilance_dashboard\backend\src\index.ts:12:1)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1854:14)
+    at Module._compile (D:\label\pharmacovigilance_dashboard\node_modules\source-map-support\source-map-support.js:568:25)
+[frontend] [2m11:38:01 am[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [31m[Unhandled error] [1mTypeError[22m: Cannot read properties of undefined (reading 'length')
+[39m > CsvImportPage src/pages/CsvImportPage.tsx:167:86
+    165 |                </div>
+    166 |                <div className="stat-pills">
+    167 |                  <span className="pill green"><CheckCircle size={13} /> {preview.valid.length} valid</span>
+        |                                                                                        ^
+    168 |                  <span className="pill red"><XCircle size={13} /> {preview.invalid.length} invalid</span>
+    169 |                  <span className="pill amber"><AlertTriangle size={13} /> {preview.duplicates} duplicates</span>
+ > Object.react_stack_bottom_frame ../node_modules/react-dom/cjs/react-dom-client.development.js:25904:19
+ > renderWithHooks ../node_modules/react-dom/cjs/react-dom-client.development.js:7662:21
+ > updateFunctionComponent ../node_modules/react-dom/cjs/react-dom-client.development.js:10166:18
+ > beginWork ../node_modules/react-dom/cjs/react-dom-client.development.js:11778:17
+ > runWithFiberInDEV ../node_modules/react-dom/cjs/react-dom-client.development.js:871:29
+ > performUnitOfWork ../node_modules/react-dom/cjs/react-dom-client.development.js:17641:21
+ > workLoopSync ../node_modules/react-dom/cjs/react-dom-client.development.js:17469:40
+ > renderRootSync ../node_modules/react-dom/cjs/react-dom-client.development.js:17450:10
+ > performWorkOnRoot ../node_modules/react-dom/cjs/react-dom-client.development.js:16583:34
+
+[2m11:38:01 am[22m [33m[1m[vite][22m[39m [33m[2m(client)[22m[39m [2m[console.warn] [22mAn error occurred in the <CsvImportPage> component.
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries.
+
+[backend] TypeError: argument handler must be a function
+    at Route.<computed> [as get] (D:\label\pharmacovigilance_dashboard\node_modules\router\lib\route.js:228:15)
+    at router.Router.<computed> [as get] (D:\label\pharmacovigilance_dashboard\node_modules\router\index.js:448:19)
+    at Object.<anonymous> (D:\label\pharmacovigilance_dashboard\backend\src\routes\reportRoutes.ts:11:8)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1854:14)
+    at Module._compile (D:\label\pharmacovigilance_dashboard\node_modules\source-map-support\source-map-support.js:568:25)
+    at Module.m._compile (C:\Users\vipin\AppData\Local\Temp\ts-node-dev-hook-930106338339553.js:69:33)
+    at node:internal/modules/cjs/loader:1985:10
+    at require.extensions..jsx.require.extensions..js (C:\Users\vipin\AppData\Local\Temp\ts-node-dev-hook-930106338339553.js:114:20)
+    at require.extensions.<computed> (C:\Users\vipin\AppData\Local\Temp\ts-node-dev-hook-930106338339553.js:71:20)
+    at Object.nodeDevHook [as .ts] (D:\label\pharmacovigilance_dashboard\node_modules\ts-node-dev\lib\hook.js:63:13)
+    at Module.load (node:internal/modules/cjs/loader:1577:32)
+    at Module._load (node:internal/modules/cjs/loader:1379:12)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+    at Module.require (node:internal/modules/cjs/loader:1600:12)
+    at require (node:internal/modules/helpers:153:16)
+    at Object.<anonymous> (D:\label\pharmacovigilance_dashboard\backend\src\index.ts:7:1)

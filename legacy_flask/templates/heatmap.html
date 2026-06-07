@@ -1,0 +1,60 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<h1 class="mb-4">🔥 Drug-Effect Safety Heatmap</h1>
+
+<p class="lead">Visual representation of signal strength across drug-effect pairs</p>
+
+<div class="table-responsive">
+<table class="table table-bordered text-center">
+  <thead class="table-dark">
+    <tr>
+      <th>Drug / Effect</th>
+      {% for effect in effects %}
+      <th title="{{ effect }}"><small>{{ effect[:20] }}</small></th>
+      {% endfor %}
+    </tr>
+  </thead>
+  <tbody>
+    {% for drug in drugs %}
+    <tr>
+      <td><strong>{{ drug }}</strong></td>
+      {% for effect in effects %}
+        {% set prr_value = 0 %}
+        {% for signal in signals %}
+          {% if signal.drug == drug and signal.effect == effect %}
+            {% set prr_value = signal.prr %}
+          {% endif %}
+        {% endfor %}
+        <td>
+          {% if prr_value > 0 %}
+            {% if prr_value >= 100 %}
+              <span class="badge bg-danger" title="PRR: {{ prr_value }}">{{ prr_value }}</span>
+            {% elif prr_value >= 10 %}
+              <span class="badge bg-warning text-dark" title="PRR: {{ prr_value }}">{{ prr_value }}</span>
+            {% else %}
+              <span class="badge bg-info" title="PRR: {{ prr_value }}">{{ prr_value }}</span>
+            {% endif %}
+          {% else %}
+            <span class="text-muted">—</span>
+          {% endif %}
+        </td>
+      {% endfor %}
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+</div>
+
+<div class="mt-4 p-3 bg-light rounded">
+  <h5>Color Legend:</h5>
+  <ul>
+    <li><span class="badge bg-danger">Red</span> - Strong signals (PRR ≥ 100)</li>
+    <li><span class="badge bg-warning text-dark">Yellow</span> - Moderate signals (PRR 10-99)</li>
+    <li><span class="badge bg-info">Blue</span> - Weak signals (PRR 2-9)</li>
+    <li><span class="text-muted">—</span> - No signal detected</li>
+  </ul>
+</div>
+
+{% endblock %}

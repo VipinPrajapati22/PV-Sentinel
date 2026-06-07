@@ -1,0 +1,154 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<h1 class="mb-4">📊 Dashboard Analytics</h1>
+
+<div class="row mb-4">
+  <div class="col-md-12">
+    <a href="/upload" class="btn btn-info me-2">📤 Upload CSV File</a>
+    <a href="/export/excel" class="btn btn-success">💾 Export as Excel</a>
+  </div>
+</div>
+
+<div class="row mb-4">
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-header bg-primary text-white">
+        <h5>Severity Distribution</h5>
+      </div>
+      <div class="card-body">
+        <canvas id="severityChart"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-header bg-danger text-white">
+        <h5>Signal Strength Distribution</h5>
+      </div>
+      <div class="card-body">
+        <canvas id="signalChart"></canvas>
+      </div>
+    </div>
+</div>
+
+<div class="row mb-4">
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-header bg-info text-white">
+        <h5>Causality Assessment</h5>
+      </div>
+      <div class="card-body">
+        <canvas id="causalityChart"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-header bg-warning text-dark">
+        <h5>Top 10 Side Effects</h5>
+      </div>
+      <div class="card-body">
+        <canvas id="reactionChart"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row mb-4">
+  <div class="col-md-12">
+    <div class="alert alert-info">
+      <h5>Summary</h5>
+      <p class="mb-0">Total Reports: <strong>{{ total_reports }}</strong></p>
+    </div>
+  </div>
+</div>
+
+<script>
+// Severity Chart
+const severityCtx = document.getElementById('severityChart').getContext('2d');
+new Chart(severityCtx, {
+    type: 'doughnut',
+    data: {
+        labels: {{ severity_labels | tojson }},
+        datasets: [{
+            data: {{ severity_values | tojson }},
+            backgroundColor: ['#dc3545', '#ffc107', '#17a2b8', '#28a745']
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: { position: 'bottom' }
+        }
+    }
+});
+
+// Signal Strength Chart
+const signalCtx = document.getElementById('signalChart').getContext('2d');
+fetch('/api/signal-stats')
+    .then(r => r.json())
+    .then(data => {
+        new Chart(signalCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Strong (PRR>100)', 'Moderate (PRR 10-100)', 'Weak (PRR 2-10)'],
+                datasets: [{
+                    label: 'Signal Count',
+                    data: [data.strong, data.moderate, data.weak],
+                    backgroundColor: ['#dc3545', '#ffc107', '#17a2b8']
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: { beginAtZero: true }
+                }
+            }
+        });
+    });
+
+// Causality Chart
+const causalityCtx = document.getElementById('causalityChart').getContext('2d');
+new Chart(causalityCtx, {
+    type: 'bar',
+    data: {
+        labels: {{ causality_labels | tojson }},
+        datasets: [{
+            label: 'Count',
+            data: {{ causality_values | tojson }},
+            backgroundColor: '#007bff'
+        }]
+    },
+    options: {
+        responsive: true,
+        indexAxis: 'y'
+    }
+});
+
+// Reaction Chart
+const reactionCtx = document.getElementById('reactionChart').getContext('2d');
+new Chart(reactionCtx, {
+    type: 'bar',
+    data: {
+        labels: {{ reaction_labels | tojson }},
+        datasets: [{
+            label: 'Number of Reports',
+            data: {{ reaction_values | tojson }},
+            backgroundColor: '#28a745'
+        }]
+    },
+    options: {
+        responsive: true,
+        indexAxis: 'y',
+        scales: {
+            x: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+</script>
+
+{% endblock %}

@@ -1,0 +1,7 @@
+Patient Age,Patient Gender,Suspected Drug,Reaction,Severity,Causality,Seriousness,Outcome,Follow-up,Reporter Name,Notes
+62,Female,Metformin,Lactic Acidosis,Severe,Probable,Serious,Hospitalized,Ongoing,Dr. Lee,Second case of lactic acidosis with Metformin
+68,Male,Metformin,Lactic Acidosis,Severe,Probable,Serious,Hospitalized,Completed,Dr. Garcia,Third case of lactic acidosis after Metformin use
+45,Female,Lisinopril,Persistent Cough,Mild,Possible,Non-Serious,Resolved,Completed,Dr. Brown,Patient developed dry cough after Lisinopril
+55,Male,Lisinopril,Persistent Cough,Mild,Possible,Non-Serious,Resolved,Completed,Dr. Wilson,Angiotensin converting enzyme inhibitor causing cough
+48,Female,Aspirin,GI Irritation,Moderate,Probable,Serious,Ongoing,Pending,Dr. Davis,Aspirin causing gastric irritation
+52,Male,Aspirin,GI Irritation,Moderate,Probable,Serious,Ongoing,Pending,Dr. Taylor,NSAID-related gastrointestinal issue

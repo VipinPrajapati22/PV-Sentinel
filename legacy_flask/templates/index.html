@@ -1,0 +1,65 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<div class="row mb-4">
+  <div class="col-md-6">
+    <div class="alert alert-info">
+      <h4>Total ADR Reports</h4>
+      <p class="fs-3"><strong>{{ total_reports }}</strong></p>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="alert alert-danger">
+      <h4>Detected Safety Signals</h4>
+      <p class="fs-3"><strong>{{ total_signals }}</strong></p>
+      <a href="/signals" class="btn btn-sm btn-danger">View All Signals</a>
+    </div>
+  </div>
+</div>
+
+<h2 class="mb-4">Recent ADR Reports</h2>
+
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+    <thead class="table-dark">
+        <tr>
+            <th>ID</th>
+            <th>Drug</th>
+            <th>Reaction</th>
+            <th>Severity</th>
+            <th>Causality</th>
+            <th>Outcome</th>
+            <th>Date</th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+    {% for report in reports %}
+
+        <tr>
+            <td>{{ report.id }}</td>
+            <td>{{ report.suspected_drug }}</td>
+            <td>{{ report.reaction }}</td>
+            <td>
+              {% if report.severity == 'High' %}
+                <span class="badge bg-danger">{{ report.severity }}</span>
+              {% elif report.severity == 'Medium' %}
+                <span class="badge bg-warning">{{ report.severity }}</span>
+              {% else %}
+                <span class="badge bg-info">{{ report.severity }}</span>
+              {% endif %}
+            </td>
+            <td>{{ report.causality }}</td>
+            <td>{{ report.outcome }}</td>
+            <td>{{ report.report_date.strftime('%Y-%m-%d') if report.report_date else 'N/A' }}</td>
+        </tr>
+
+    {% endfor %}
+
+    </tbody>
+</table>
+</div>
+
+{% endblock %}

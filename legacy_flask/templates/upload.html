@@ -1,0 +1,102 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<h1 class="mb-4">📤 Upload ADR Reports</h1>
+
+<p class="lead">Import bulk ADR reports from CSV file</p>
+
+<div class="row">
+  <div class="col-md-8">
+    <div class="card">
+      <div class="card-header bg-info text-white">
+        <h5>Upload CSV File</h5>
+      </div>
+      <div class="card-body">
+        {% if success %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+          <strong>✓ Success!</strong> {{ success }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+        {% endif %}
+        
+        {% if error %}
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+          <strong>✗ Error:</strong> {{ error }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+        {% endif %}
+
+        <form method="POST" enctype="multipart/form-data">
+          <div class="mb-3">
+            <label for="file" class="form-label">Select CSV File</label>
+            <input type="file" class="form-control" id="file" name="file" accept=".csv" required>
+            <small class="text-muted">Supported format: CSV (.csv)</small>
+          </div>
+          
+          <button type="submit" class="btn btn-primary btn-lg">
+            📁 Upload & Analyze
+          </button>
+          <a href="/" class="btn btn-secondary btn-lg">Cancel</a>
+        </form>
+      </div>
+    </div>
+
+    <div class="card mt-4">
+      <div class="card-header bg-secondary text-white">
+        <h5>CSV Format Requirements</h5>
+      </div>
+      <div class="card-body">
+        <p>Your CSV file should contain the following columns:</p>
+        <ul>
+          <li><code>Patient Age</code> - Age of the patient</li>
+          <li><code>Patient Gender</code> - Male, Female, or Other</li>
+          <li><code>Suspected Drug</code> - Name of the drug (required)</li>
+          <li><code>Reaction</code> - Adverse reaction or side effect (required)</li>
+          <li><code>Severity</code> - Mild, Moderate, Severe, or Life-Threatening</li>
+          <li><code>Causality</code> - WHO-UMC assessment</li>
+          <li><code>Seriousness</code> - Serious or Non-Serious</li>
+          <li><code>Outcome</code> - Treatment outcome</li>
+          <li><code>Follow-up</code> - Follow-up status</li>
+          <li><code>Reporter Name</code> - Name of reporting healthcare professional</li>
+          <li><code>Notes</code> - Additional clinical notes</li>
+        </ul>
+        
+        <p class="mt-3"><strong>Example CSV Header:</strong></p>
+        <code>
+          Patient Age,Patient Gender,Suspected Drug,Reaction,Severity,Causality,Seriousness,Outcome,Follow-up,Reporter Name,Notes
+        </code>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="card bg-light">
+      <div class="card-header">
+        <h5>📊 What Happens Next</h5>
+      </div>
+      <div class="card-body">
+        <ol>
+          <li><strong>Import:</strong> CSV data is parsed and validated</li>
+          <li><strong>Store:</strong> Records are saved to the database</li>
+          <li><strong>Analyze:</strong> PRR signal detection runs automatically</li>
+          <li><strong>Report:</strong> Safety signals are categorized by strength</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="card mt-3 border-success">
+      <div class="card-header bg-success text-white">
+        <h5>💾 Export Results</h5>
+      </div>
+      <div class="card-body">
+        <p>After uploading, you can export your analysis:</p>
+        <a href="/export/excel" class="btn btn-success btn-sm w-100">
+          📥 Download Excel Report
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

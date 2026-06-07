@@ -1,0 +1,28 @@
+{
+  "name": "pharmacovigilance-dashboard",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Local-first pharmacovigilance signal detection platform",
+  "workspaces": [
+    "backend",
+    "frontend"
+  ],
+  "scripts": {
+    "dev": "node scripts/dev.mjs",
+    "build": "npm run build --workspace backend && npm run build --workspace frontend",
+    "seed": "npm run seed --workspace backend",
+    "test": "npm run test --workspace backend",
+    "frontend:build": "npm run build --workspace frontend",
+    "backend:build": "npm run build --workspace backend"
+  },
+  "keywords": [
+    "pharmacovigilance",
+    "signal-detection",
+    "drug-safety"
+  ],
+  "license": "ISC",
+  "dependencies": {
+    "@prisma/client": "^7.8.0",
+    "prisma": "^7.8.0"
+  }
+}

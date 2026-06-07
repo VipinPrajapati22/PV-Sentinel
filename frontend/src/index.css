@@ -1,0 +1,4 @@
+/* Base reset – App.css handles all styles */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body, #root { min-height: 100%; }
+button, input, select, textarea { font: inherit; }

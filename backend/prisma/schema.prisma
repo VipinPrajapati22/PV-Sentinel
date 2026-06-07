@@ -1,0 +1,204 @@
+datasource db {
+  provider = "sqlite"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id            String         @id @default(uuid())
+  email         String         @unique
+  passwordHash  String
+  firstName     String
+  lastName      String
+  roleId        String
+  role          Role           @relation(fields: [roleId], references: [id])
+  active        Boolean        @default(true)
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  auditLogs     AuditLog[]
+  riskRegister  RiskRegister[]
+  capaUpdated   CapaTracking[]
+  reports       ADRReport[]
+  exports       Export[]
+  notifications Notification[]
+}
+
+model Role {
+  id          String   @id @default(uuid())
+  name        String   @unique
+  description String?
+  users       User[]
+}
+
+model Patient {
+  id             String      @id @default(uuid())
+  age            Float
+  ageUnit        String      
+  gender         String      
+  weight         Float?      
+  height         Float?      
+  medicalHistory String?
+  comorbidities  String?
+  reports        ADRReport[]
+  createdAt      DateTime    @default(now())
+}
+
+model Drug {
+  id           String            @id @default(uuid())
+  brandName    String
+  genericName  String
+  atcCode      String
+  manufacturer String
+  reports      ADRReport[]
+  signals      SignalDetection[]
+  createdAt    DateTime          @default(now())
+}
+
+model Terminology {
+  id        String      @id @default(uuid())
+  lltName   String      
+  ptName    String      
+  socName   String      
+  synonyms  String?     
+  reports   ADRReport[]
+  createdAt DateTime    @default(now())
+}
+
+model ADRReport {
+  id                    String      @id @default(uuid())
+  patientId             String
+  patient               Patient     @relation(fields: [patientId], references: [id])
+  suspectedDrugId       String
+  suspectedDrug         Drug        @relation(fields: [suspectedDrugId], references: [id])
+  reactionTerminologyId String
+  reactionTerminology   Terminology @relation(fields: [reactionTerminologyId], references: [id])
+  reactionFreeText      String
+  severity              String      
+  seriousness           String      
+  outcome               String      
+  reporterName          String
+  reporterType          String      
+  followUp              String      
+  notes                 String?
+  temporalRelationship  Boolean?
+  dechallengeResult     String?     
+  rechallengeResult     String?     
+  alternativeCauses     String?     
+  causalityAssessment   String      
+  causalityConfidence   Float       @default(0.0)
+  causalityReasoning    String?
+  reportDate            DateTime    @default(now())
+  createdById           String
+  createdBy             User        @relation(fields: [createdById], references: [id])
+  createdAt             DateTime    @default(now())
+  updatedAt             DateTime    @updatedAt
+  attachments           Attachment[]
+}
+
+model SignalDetection {
+  id                   String          @id @default(uuid())
+  drugId               String
+  drug                 Drug            @relation(fields: [drugId], references: [id])
+  reactionPtName       String          
+  prr                  Float
+  ror                  Float
+  chiSquare            Float
+  ciLower              Float
+  ciUpper              Float
+  informationComponent Float
+  signalScore          Float
+  status               String          
+  strength             String          
+  trend                String          
+  detectedAt           DateTime        @default(now())
+  updatedAt            DateTime        @updatedAt
+  histories            SignalHistory[]
+  riskRegisters        RiskRegister[]
+}
+
+model SignalHistory {
+  id             String          @id @default(uuid())
+  signalId       String
+  signal         SignalDetection @relation(fields: [signalId], references: [id], onDelete: Cascade)
+  previousStatus String
+  newStatus      String
+  modifiedById   String
+  notes          String?
+  changedAt      DateTime        @default(now())
+}
+
+model RiskRegister {
+  id              String          @id @default(uuid())
+  signalId        String
+  signal          SignalDetection @relation(fields: [signalId], references: [id])
+  riskCategory    String          
+  severityScore   Int             
+  likelihoodScore Int             
+  riskScore       Int             
+  capaDescription String
+  capaStatus      String          
+  ownerId         String
+  owner           User            @relation(fields: [ownerId], references: [id])
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+  capaTrackings   CapaTracking[]
+}
+
+model CapaTracking {
+  id            String       @id @default(uuid())
+  riskId        String
+  risk          RiskRegister @relation(fields: [riskId], references: [id], onDelete: Cascade)
+  actionTaken   String
+  status        String       
+  targetDate    DateTime
+  completedDate DateTime?
+  updatedById   String
+  updatedBy     User         @relation(fields: [updatedById], references: [id])
+  updatedAt     DateTime     @updatedAt
+}
+
+model Notification {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title     String
+  message   String
+  read      Boolean  @default(false)
+  type      String   
+  createdAt DateTime @default(now())
+}
+
+model AuditLog {
+  id         String   @id @default(uuid())
+  userId     String?
+  user       User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  action     String   
+  resource   String   
+  resourceId String?
+  details    String?
+  ipAddress  String?
+  createdAt  DateTime @default(now())
+}
+
+model Export {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  fileType  String   
+  fileName  String
+  status    String   
+  createdAt DateTime @default(now())
+}
+
+model Attachment {
+  id         String    @id @default(uuid())
+  reportId   String
+  report     ADRReport @relation(fields: [reportId], references: [id], onDelete: Cascade)
+  fileName   String
+  fileType   String
+  filePath   String
+  fileSize   Int
+  uploadedAt DateTime  @default(now())
+}

@@ -1,0 +1,4 @@
+Patient Age,Patient Gender,Suspected Drug,Reaction,Severity,Causality,Seriousness,Outcome,Follow-up,Reporter Name,Notes
+65,Male,Metformin,Lactic Acidosis,Severe,Probable,Serious,Hospitalized,Ongoing,Dr. Williams,Elderly patient with renal impairment presented with lactic acidosis after Metformin use
+38,Female,Lisinopril,Persistent Cough,Mild,Possible,Non-Serious,Resolved,Completed,Dr. Chen,Patient reported dry cough that resolved after discontinuation
+72,Male,Warfarin,GI Bleeding,Severe,Probable,Serious,Hospitalized,Ongoing,Dr. Martinez,Excessive anticoagulation led to upper GI bleed requiring transfusion
