@@ -131,7 +131,7 @@ export async function getSignalById(req: AuthenticatedRequest, res: Response) {
     const causalityStats: Record<string, number> = {};
     const timelineData: Record<string, number> = {}; // Format: YYYY-MM
 
-    cases.forEach((c) => {
+    cases.forEach((c: any) => {
       // Age group
       const age = c.patient.age;
       const unit = c.patient.ageUnit;

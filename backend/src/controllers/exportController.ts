@@ -41,7 +41,7 @@ export async function exportExcel(req: AuthenticatedRequest, res: Response) {
     });
 
     dbReports.forEach((r: any, idx: number) => {
-      const pat = patients.find(p => p.id === r.patientId);
+      const pat = patients.find((p: any) => p.id === r.patientId);
       if (pat) {
         reportsData[idx].patientAge = pat.age;
         reportsData[idx].patientAgeUnit = pat.ageUnit;
