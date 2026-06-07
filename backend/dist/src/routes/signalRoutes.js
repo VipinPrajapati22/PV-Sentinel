@@ -1,0 +1,13 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const signalController_1 = require("../controllers/signalController");
+const auth_1 = require("../middleware/auth");
+const router = (0, express_1.Router)();
+router.use(auth_1.authenticateToken);
+router.get('/', signalController_1.getSignals);
+router.get('/top', signalController_1.getTopSignals);
+router.get('/:id', signalController_1.getSignalById);
+router.patch('/:id/status', signalController_1.updateSignalStatus);
+router.post('/reanalyze', signalController_1.triggerReanalysis);
+exports.default = router;

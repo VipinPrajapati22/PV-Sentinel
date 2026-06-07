@@ -1,0 +1,11 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const exportController_1 = require("../controllers/exportController");
+const auth_1 = require("../middleware/auth");
+const router = (0, express_1.Router)();
+router.use(auth_1.authenticateToken);
+router.get('/dashboard', exportController_1.dashboard);
+router.get('/excel', exportController_1.exportExcel);
+router.get('/pdf/:signalId', exportController_1.exportSignalPdf);
+exports.default = router;

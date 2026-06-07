@@ -1,8 +1,15 @@
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import {
-  X, Activity, BarChart2, Clock, User, ,
-  Brain, ChevronDown, ChevronUp, CheckCircle
+  X,
+  Activity,
+  BarChart2,
+  Clock,
+  User,
+  Brain,
+  ChevronDown,
+  ChevronUp,
+  CheckCircle
 } from 'lucide-react';
 import { signals } from '../lib/api';
 import {
