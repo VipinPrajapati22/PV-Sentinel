@@ -9,7 +9,7 @@ import SignalsPage from './pages/SignalsPage';
 import RiskRegisterPage from './pages/RiskRegisterPage';
 import NotificationsPage from './pages/NotificationsPage';
 import AuditTrailPage from './pages/AuditTrailPage';
-import About from './pages/AboutPage';
+import AboutPage from './pages/AboutPage';
 
 function PrivateRoutes() {
   const { user, loading } = useAuth();
