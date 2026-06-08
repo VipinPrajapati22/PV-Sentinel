@@ -4,7 +4,8 @@ import { useQuery } from '@tanstack/react-query';
 import {
   ShieldCheck, LayoutDashboard, UploadCloud, FlaskConical,
   LineChart, ListChecks, Database, Bell, Download, Search,
-  LogOut, Lock, Menu, X
+  LogOut, Lock, Menu, X,
+  User,
 } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { notifications as notifApi, exports_ } from '../lib/api';
@@ -17,7 +18,7 @@ const NAV_ITEMS = [
   { to: '/risks', icon: ListChecks, label: 'Risk Register' },
   { to: '/notifications', icon: Bell, label: 'Notifications' },
   { to: '/audit', icon: Database, label: 'Audit Trail' },
-  { to: '/admin', icon: Database, label: 'Admin Panel' },
+  { to: '/about', icon: User, label: 'About Us' },
 ];
 
 
