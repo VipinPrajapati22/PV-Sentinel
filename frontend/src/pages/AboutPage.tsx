@@ -1,7 +1,7 @@
 import {
   Mail,
-  Linkedin,
-  Github,
+  Link,
+  Globe,
   User,
 } from "lucide-react";
 
@@ -56,7 +56,7 @@ export default function AboutPage() {
               className="flex items-center gap-5 p-6 border border-slate-200 rounded-xl hover:border-blue-300 hover:shadow-md transition-all bg-white"
             >
               <div className="w-14 h-14 flex items-center justify-center rounded-xl bg-blue-50">
-                <Linkedin className="w-7 h-7 text-blue-700" />
+                <Link className="w-7 h-7 text-blue-700" />
               </div>
 
               <div>
@@ -78,7 +78,7 @@ export default function AboutPage() {
               className="flex items-center gap-5 p-6 border border-slate-200 rounded-xl hover:border-blue-300 hover:shadow-md transition-all bg-white"
             >
               <div className="w-14 h-14 flex items-center justify-center rounded-xl bg-blue-50">
-                <Github className="w-7 h-7 text-blue-700" />
+                <Globe className="w-7 h-7 text-blue-700" />
               </div>
 
               <div>
