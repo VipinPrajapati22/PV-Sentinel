@@ -9,6 +9,7 @@ import SignalsPage from './pages/SignalsPage';
 import RiskRegisterPage from './pages/RiskRegisterPage';
 import NotificationsPage from './pages/NotificationsPage';
 import AuditTrailPage from './pages/AuditTrailPage';
+import About from './pages/AboutPage';
 
 function PrivateRoutes() {
   const { user, loading } = useAuth();
@@ -31,6 +32,7 @@ function PrivateRoutes() {
         <Route path="/risks" element={<RiskRegisterPage />} />
         <Route path="/notifications" element={<NotificationsPage />} />
         <Route path="/audit" element={<AuditTrailPage />} />
+        <Route path="/about" element={<AboutPage />} />
       </Route>
     </Routes>
   );

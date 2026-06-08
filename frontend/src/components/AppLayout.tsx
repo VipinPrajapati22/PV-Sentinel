@@ -17,6 +17,7 @@ const NAV_ITEMS = [
   { to: '/risks', icon: ListChecks, label: 'Risk Register' },
   { to: '/notifications', icon: Bell, label: 'Notifications' },
   { to: '/audit', icon: Database, label: 'Audit Trail' },
+  { to: '/admin', icon: Database, label: 'Admin Panel' },
 ];
 
 
